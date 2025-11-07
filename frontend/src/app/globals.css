@@ -4,32 +4,24 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.08 0 0);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.12 0 0);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.08 0 0);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.65 0.25 290);
-  --primary-foreground: oklch(0.95 0 0);
-  --secondary: oklch(0.25 0 0);
-  --secondary-foreground: oklch(0.95 0 0);
-  --muted: oklch(0.3 0 0);
-  --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.7 0.2 340);
-  --accent-foreground: oklch(0.12 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.95 0 0);
-  --border: oklch(0.2 0 0);
-  --input: oklch(0.15 0 0);
-  --ring: oklch(0.65 0.25 290);
-  --chart-1: oklch(0.7 0.2 290);
-  --chart-2: oklch(0.6 0.2 200);
-  --chart-3: oklch(0.5 0.15 340);
-  --chart-4: oklch(0.75 0.15 180);
-  --chart-5: oklch(0.65 0.2 240);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.12 0 0);
+  /* Updated color tokens for Apple-style glass-edge design */
+  --background: hsl(210, 40%, 9%);
+  --foreground: hsl(210, 20%, 95%);
+  --card: hsl(210, 35%, 12%);
+  --card-foreground: hsl(210, 20%, 95%);
+  --primary: hsl(210, 100%, 50%);
+  --primary-foreground: hsl(210, 20%, 5%);
+  --secondary: hsl(210, 25%, 30%);
+  --secondary-foreground: hsl(210, 20%, 95%);
+  --muted: hsl(210, 20%, 40%);
+  --muted-foreground: hsl(210, 20%, 75%);
+  --accent: hsl(210, 100%, 50%);
+  --accent-foreground: hsl(210, 20%, 5%);
+  --border: hsl(210, 25%, 25%);
+  --input: hsl(210, 35%, 18%);
+  --ring: hsl(210, 100%, 50%);
+  --radius: 12px;
+  --sidebar: hsl(30 8% 97%);
   --sidebar-foreground: oklch(0.95 0 0);
   --sidebar-primary: oklch(0.65 0.25 290);
   --sidebar-primary-foreground: oklch(0.95 0 0);
@@ -58,8 +50,8 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
+  --color-border: var(--color-border);
+  --color-input: var(--color-input);
   --color-ring: var(--color-ring);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
@@ -89,26 +81,27 @@
   }
 }
 
+/* Animation keyframes for Apple-style smooth interactions */
 @keyframes blob {
   0%,
   100% {
     transform: translate(0, 0) scale(1);
   }
   25% {
-    transform: translate(20px, -50px) scale(1.1);
+    transform: translate(15px, -30px) scale(1.05);
   }
   50% {
-    transform: translate(-20px, 20px) scale(0.9);
+    transform: translate(-15px, 10px) scale(0.95);
   }
   75% {
-    transform: translate(50px, 50px) scale(1.05);
+    transform: translate(30px, 30px) scale(1.02);
   }
 }
 
-@keyframes fadeInUp {
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -116,8 +109,41 @@
   }
 }
 
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+  }
+}
+
 .animate-blob {
-  animation: blob 7s infinite;
+  animation: blob 8s ease-in-out infinite;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.6s ease-out;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
 }
 
 .animation-delay-2000 {
@@ -126,4 +152,8 @@
 
 .animation-delay-4000 {
   animation-delay: 4s;
+}
+
+.animation-delay-6000 {
+  animation-delay: 6s;
 }

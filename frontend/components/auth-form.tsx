@@ -1,6 +1,7 @@
 "use client"
 
-import React, { useState } from "react"
+import type React from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -30,7 +31,6 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
       }
 
       if (isForgotPassword) {
-        // Simulate password recovery
         console.log("Password recovery for:", email)
         await new Promise((resolve) => setTimeout(resolve, 1500))
         alert("If this email exists, password recovery instructions have been sent.")
@@ -84,10 +84,7 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
     <form onSubmit={handleEmailAuth} className="space-y-6 sm:space-y-7">
       {/* Email Field */}
       <div className="flex items-center justify-between gap-4">
-        <Label
-          htmlFor="email"
-          className="text-white/90 font-medium text-sm font-sans min-w-[130px] text-right"
-        >
+        <Label htmlFor="email" className="text-white/80 font-medium text-sm font-sans min-w-[130px] text-right">
           Email Address
         </Label>
         <Input
@@ -96,18 +93,15 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
           placeholder="you@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="bg-white/5 border-white/15 text-white placeholder:text-white/35 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 font-sans transition-all h-11 rounded-lg flex-1"
+          className="bg-white/10 border-white/20 text-white placeholder:text-white/30 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/30 font-sans transition-all h-11 rounded-lg flex-1"
           disabled={loading}
         />
       </div>
 
-      {/* Password Field (hide during password recovery) */}
+      {/* Password Field */}
       {!isForgotPassword && (
         <div className="flex items-center justify-between gap-4">
-          <Label
-            htmlFor="password"
-            className="text-white/90 font-medium text-sm font-sans min-w-[130px] text-right"
-          >
+          <Label htmlFor="password" className="text-white/80 font-medium text-sm font-sans min-w-[130px] text-right">
             Password
           </Label>
           <Input
@@ -116,18 +110,18 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
             placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="bg-white/5 border-white/15 text-white placeholder:text-white/35 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 font-sans transition-all h-11 rounded-lg flex-1"
+            className="bg-white/10 border-white/20 text-white placeholder:text-white/30 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/30 font-sans transition-all h-11 rounded-lg flex-1"
             disabled={loading}
           />
         </div>
       )}
 
-      {/* Confirm Password (Sign Up only) */}
+      {/* Confirm Password */}
       {isSignUp && !isForgotPassword && (
         <div className="flex items-center justify-between gap-4">
           <Label
             htmlFor="confirm-password"
-            className="text-white/90 font-medium text-sm font-sans min-w-[130px] text-right"
+            className="text-white/80 font-medium text-sm font-sans min-w-[130px] text-right"
           >
             Confirm Password
           </Label>
@@ -137,7 +131,7 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
             placeholder="••••••••"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="bg-white/5 border-white/15 text-white placeholder:text-white/35 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 font-sans transition-all h-11 rounded-lg flex-1"
+            className="bg-white/10 border-white/20 text-white placeholder:text-white/30 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/30 font-sans transition-all h-11 rounded-lg flex-1"
             disabled={loading}
           />
         </div>
@@ -145,7 +139,7 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-500/10 border border-red-500/25 rounded-lg p-3 text-red-300 text-sm font-sans animate-in fade-in duration-300">
+        <div className="bg-red-500/15 border border-red-500/40 rounded-lg p-3 text-red-300 text-sm font-sans animate-in fade-in duration-300">
           {error}
         </div>
       )}
@@ -154,9 +148,9 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
       <Button
         type="submit"
         disabled={loading}
-        className="w-full bg-linear-to-r from-purple-500 via-purple-500 to-pink-500 hover:from-purple-600 hover:via-purple-600 hover:to-pink-600 
+        className="w-full bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 
                    text-white font-semibold py-2.5 rounded-lg transition-all disabled:opacity-50 font-sans shadow-lg 
-                   hover:shadow-purple-500/50 duration-200 h-11 text-base"
+                   hover:shadow-purple-500/40 duration-200 h-11 text-base"
       >
         {loading ? (
           <div className="flex items-center gap-2">
@@ -172,26 +166,26 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
         )}
       </Button>
 
-      {/* Forgot Password Link (Sign-in only) */}
+      {/* Forgot Password Link */}
       {!isSignUp && !isForgotPassword && (
         <div className="text-center mt-1">
           <button
             type="button"
             onClick={() => setIsForgotPassword(true)}
-            className="text-purple-400 hover:text-purple-300 text-sm font-medium font-sans transition-colors"
+            className="text-purple-300 hover:text-purple-200 text-sm font-medium font-sans transition-colors"
           >
             Forgot Password?
           </button>
         </div>
       )}
 
-      {/* Back to Sign In link (from forgot password mode) */}
+      {/* Back to Sign In */}
       {isForgotPassword && (
         <div className="text-center mt-1">
           <button
             type="button"
             onClick={() => setIsForgotPassword(false)}
-            className="text-purple-400 hover:text-purple-300 text-sm font-medium font-sans transition-colors"
+            className="text-purple-300 hover:text-purple-200 text-sm font-medium font-sans transition-colors"
           >
             ← Back to Sign In
           </button>
@@ -203,10 +197,10 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
         <>
           <div className="relative my-6 sm:my-7">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/10"></div>
+              <div className="w-full border-t border-white/20"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-3 bg-linear-to-br from-slate-900 via-purple-950 to-slate-900 text-white/40 font-sans text-xs font-medium">
+              <span className="px-3 bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 text-white/60 font-sans text-xs font-medium">
                 OR CONTINUE WITH
               </span>
             </div>
@@ -217,8 +211,8 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
             type="button"
             onClick={handleGoogleAuth}
             disabled={loading}
-            className="w-full border border-white/15 text-white/90 hover:bg-white/5 hover:border-white/25 font-sans 
-                       bg-transparent/50 backdrop-blur-sm rounded-lg h-11 transition-all duration-200 font-medium 
+            className="w-full border border-white/20 text-white hover:bg-white/10 hover:border-white/40 font-sans 
+                       bg-white/5 backdrop-blur-sm rounded-lg h-11 transition-all duration-200 font-medium 
                        flex items-center justify-center"
           >
             <svg

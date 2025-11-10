@@ -1,90 +1,94 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import type React from "react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface AuthFormProps {
-  isSignUp: boolean
-  setIsSignUp: (value: boolean) => void
+  isSignUp: boolean;
+  setIsSignUp: (value: boolean) => void;
 }
 
 export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [isForgotPassword, setIsForgotPassword] = useState(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
 
+  // ✅ Main Auth handler (connected to backend)
   const handleEmailAuth = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setError("")
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
     try {
       if (!email) {
-        setError("Please enter your email address")
-        return
+        setError("Please enter your email address");
+        setLoading(false);
+        return;
       }
 
-      if (isForgotPassword) {
-        console.log("Password recovery for:", email)
-        await new Promise((resolve) => setTimeout(resolve, 1500))
-        alert("If this email exists, password recovery instructions have been sent.")
-        setEmail("")
-        setIsForgotPassword(false)
-        return
-      }
+      // Determine URL based on action
+      const url = isForgotPassword
+        ? "http://localhost:5000/api/auth/forgot-password"
+        : isSignUp
+        ? "http://localhost:5000/api/auth/signup"
+        : "http://localhost:5000/api/auth/signin";
 
-      if (!password) {
-        setError("Please fill in all fields")
-        return
-      }
+      // Build body dynamically
+      const body: Record<string, string> = { email, password };
+      if (isSignUp) body.confirmPassword = confirmPassword;
 
-      if (isSignUp) {
-        if (password !== confirmPassword) {
-          setError("Passwords do not match")
-          return
-        }
-        if (password.length < 6) {
-          setError("Password must be at least 6 characters")
-          return
-        }
-        console.log("Sign up:", { email })
-      } else {
-        console.log("Sign in:", { email })
-      }
+      // Send request to backend
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      setEmail("")
-      setPassword("")
-      setConfirmPassword("")
-    } catch (err) {
-      console.error(err)
-      setError("Something went wrong")
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Something went wrong");
+
+      // Success
+      alert(data.message || "Success!");
+
+      // Clear fields
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setIsForgotPassword(false);
+    } catch (err: any) {
+      setError(err.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
+  // ✅ Google OAuth handler (placeholder for now)
   const handleGoogleAuth = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      console.log("Google auth clicked")
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      console.log("Google Sign-In clicked");
+      // Here you can redirect to your backend Google OAuth route:
+      // window.location.href = "http://localhost:5000/api/auth/google";
+      await new Promise((resolve) => setTimeout(resolve, 1500));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleEmailAuth} className="space-y-6 sm:space-y-7">
       {/* Email Field */}
       <div className="flex items-center justify-between gap-4">
-        <Label htmlFor="email" className="text-white/80 font-medium text-sm font-sans min-w-[130px] text-right">
+        <Label
+          htmlFor="email"
+          className="text-white/80 font-medium text-sm font-sans min-w-[130px] text-right"
+        >
           Email Address
         </Label>
         <Input
@@ -101,7 +105,10 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
       {/* Password Field */}
       {!isForgotPassword && (
         <div className="flex items-center justify-between gap-4">
-          <Label htmlFor="password" className="text-white/80 font-medium text-sm font-sans min-w-[130px] text-right">
+          <Label
+            htmlFor="password"
+            className="text-white/80 font-medium text-sm font-sans min-w-[130px] text-right"
+          >
             Password
           </Label>
           <Input
@@ -221,7 +228,15 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+              <circle
+                cx="12"
+                cy="12"
+                r="11"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.5"
+                opacity="0.3"
+              />
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                 fill="#4285F4"
@@ -244,5 +259,5 @@ export default function AuthForm({ isSignUp, setIsSignUp }: AuthFormProps) {
         </>
       )}
     </form>
-  )
+  );
 }
